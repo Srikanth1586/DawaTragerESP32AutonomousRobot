@@ -1,0 +1,18 @@
+{
+  "name": "Oled",
+  "version": "0.0.1",
+  "description": "OLED Display library for Hospital Robot",
+  "keywords": ["display", "oled", "u8g2"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/example/hospital-robot.git"
+  },
+  "authors": [
+    {
+      "name": "Hospital Robot Team"
+    }
+  ],
+  "license": "MIT",
+  "frameworks": "arduino",
+  "platforms": "espressif32"
+}

@@ -1,69 +1,40 @@
-#ifndef UNIT_TEST
 #include <Arduino.h>
+#include "display.h"
+#include "gui.h"
+#include "robot_state.h"
+#include <unity.h>
 
-#include "Comm.h"
-
-// ======================================================
-// TASK HANDLE
-// ======================================================
-
-TaskHandle_t communicationTaskHandle = NULL;
-
-// ======================================================
-// SETUP
-// ======================================================
+RobotState robotState;  
+extern void oledTask(void *pvParameters);
 
 void setup()
 {
     Serial.begin(115200);
 
-    Serial.println();
-    Serial.println("ESP32 STARTING...");
+    u8g2.begin();
 
-    // ==========================================
-    // WIFI
-    // ==========================================
+    // Initial values
+    robotState.batteryPercent = 20;
 
-    initWiFi();
+    robotState.charging = false;
 
-    // ==========================================
-    // WEBSOCKET
-    // ==========================================
+    robotState.wifiConnected = false;
 
-    initWebSocket();
+    strcpy(robotState.mode, "BOOT");
 
-    // ==========================================
-    // CREATE QUEUE
-    // ==========================================
+    strcpy(robotState.currentTask, "INIT");
 
-    messageQueue =
-    xQueueCreate(10, sizeof(String));
-
-    // ==========================================
-    // CREATE COMM TASK
-    // ==========================================
-
+    // OLED task
     xTaskCreatePinnedToCore(
-        communicationTask,       // Task Function
-        "Communication Task",    // Task Name
-        9192,                    // Stack Size
-        NULL,                    // Parameters
-        1,                       // Priority
-        &communicationTaskHandle,// Task Handle
-        0                        // Core
-    );
-
-    Serial.println("SYSTEM READY");
+        oledTask,
+        "Test Runner    Task",
+        4096,
+        NULL,
+        1,
+        NULL,
+        1);
 }
-
-// ======================================================
-// LOOP
-// ======================================================
 
 void loop()
 {
-    // EMPTY
-
-    vTaskDelay(pdMS_TO_TICKS(1000));
 }
-#endif
