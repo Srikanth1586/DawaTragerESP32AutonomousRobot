@@ -36,19 +36,69 @@ void drawBatteryIcon(int x, int y, int level, bool charging)
     }
 }
 
-void drawWifiIcon(int x, int y, bool connected)
+void drawWifiIcon(int x, int y, WifiStatus status)
 {
-    if (!connected)
+    switch (status)
     {
-        if (!wifiBlinkState)
-            return;
+        case WIFI_CONNECTED:
+        {
+            // Center dot
+            u8g2.drawDisc(x, y, 1);
+
+            // Small arc
+            u8g2.drawCircle(x, y, 3, U8G2_DRAW_UPPER_LEFT |
+                                      U8G2_DRAW_UPPER_RIGHT);
+
+            // Medium arc
+            u8g2.drawCircle(x, y, 6, U8G2_DRAW_UPPER_LEFT |
+                                      U8G2_DRAW_UPPER_RIGHT);
+
+            // Large arc
+            u8g2.drawCircle(x, y, 9, U8G2_DRAW_UPPER_LEFT |
+                                      U8G2_DRAW_UPPER_RIGHT);
+
+            break;
+        }
+
+        case WIFI_CONNECTING:
+        {
+            if (wifiBlinkState)
+            {
+                u8g2.drawDisc(x, y, 1);
+
+                u8g2.drawCircle(x, y, 3,
+                                U8G2_DRAW_UPPER_LEFT |
+                                U8G2_DRAW_UPPER_RIGHT);
+
+                u8g2.drawCircle(x, y, 6,
+                                U8G2_DRAW_UPPER_LEFT |
+                                U8G2_DRAW_UPPER_RIGHT);
+            }
+
+            break;
+        }
+
+        case WIFI_DISCONNECTED:
+        {
+            // Partial WiFi arcs
+            u8g2.drawCircle(x, y, 3,
+                            U8G2_DRAW_UPPER_LEFT |
+                            U8G2_DRAW_UPPER_RIGHT);
+
+            u8g2.drawCircle(x, y, 6,
+                            U8G2_DRAW_UPPER_LEFT |
+                            U8G2_DRAW_UPPER_RIGHT);
+
+            // X symbol
+            u8g2.drawLine(x - 4, y - 4,
+                           x + 4, y + 4);
+
+            u8g2.drawLine(x - 4, y + 4,
+                           x + 4, y - 4);
+
+            break;
+        }
     }
-
-    u8g2.drawCircle(x, y, 1);
-
-   // u8g2.drawArc(x, y, 4, 4, 0, 180);
-
-    //u8g2.drawArc(x, y, 7, 7, 0, 180);
 }
 
 void drawNotificationBar()
@@ -73,8 +123,8 @@ void drawNotificationBar()
     u8g2.drawStr(22, 9, batteryText);
 
     // WiFi icon
-    drawWifiIcon(50, 7,
-                 robotState.wifiConnected);
+    WifiStatus wifiStatus = robotState.wifiConnected ? WIFI_CONNECTED : WIFI_DISCONNECTED;
+    drawWifiIcon(50, 7, wifiStatus);
 
     // Mode
     u8g2.drawStr(62, 9,

@@ -1,5 +1,10 @@
 #pragma once
-
+enum WifiStatus
+{
+    WIFI_DISCONNECTED,
+    WIFI_CONNECTING,
+    WIFI_CONNECTED
+};
 struct RobotState
 {
     int batteryPercent;

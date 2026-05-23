@@ -16,9 +16,9 @@ void setup()
     // Initial values
     robotState.batteryPercent = 20;
 
-    robotState.charging = false;
+    robotState.charging = true;
 
-    robotState.wifiConnected = false;
+    robotState.wifiConnected = true;
 
     strcpy(robotState.mode, "BOOT");
 
