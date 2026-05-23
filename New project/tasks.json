@@ -1,0 +1,540 @@
+[
+  {
+    "id": "b22ecafe-9775-45f4-a039-9a0ff9f420ec",
+    "patientName": "sai",
+    "patientId": "P00001",
+    "roomNumber": "A101",
+    "medicine": "p",
+    "dosage": "20",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-001",
+    "status": "moving_to_pharmacy",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-16T14:08:47.130694Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-16T14:08:47.130694Z",
+        "note": "Robot moving to pharmacy"
+      }
+    ],
+    "createdAt": "2026-05-16T14:08:47.130694Z",
+    "updatedAt": "2026-05-16T14:08:47.130694Z"
+  },
+  {
+    "id": "6f5dd9df-7a2a-4d1f-8679-874a6e34d3e8",
+    "patientName": "raju1",
+    "patientId": "p-1",
+    "roomNumber": "B-102",
+    "medicine": "ddd",
+    "dosage": "200",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-002",
+    "status": "cancelled",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-16T07:52:24.694290Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-16T07:52:24.694290Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "cancelled",
+        "at": "2026-05-16T13:49:26.415981Z",
+        "note": "Robot reset to available mode"
+      }
+    ],
+    "createdAt": "2026-05-16T07:52:24.694290Z",
+    "updatedAt": "2026-05-16T13:49:26.415981Z",
+    "cancelledAt": "2026-05-16T13:49:26.415981Z"
+  },
+  {
+    "id": "d1cf61fa-4aa8-46a4-9f64-c28d665c90f2",
+    "patientName": "raju",
+    "patientId": "P00001",
+    "roomNumber": "A102",
+    "medicine": "ddd",
+    "dosage": "200",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-001",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-16T07:19:37.797080Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-16T07:19:37.797080Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-05-16T07:31:39.303793Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-16T13:55:55.125400Z",
+        "note": "Robot passed room A101"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-05-16T13:56:15.176048Z",
+        "note": "Robot reached room A102"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-05-16T13:56:21.865968Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-05-16T07:19:37.797080Z",
+    "updatedAt": "2026-05-16T13:56:21.865968Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-05-16T07:31:39.303793Z",
+    "lastScannedTag": "NFC-A102",
+    "lastScannedRoom": "A102",
+    "arrivedAt": "2026-05-16T13:56:15.176048Z",
+    "deliveredAt": "2026-05-16T13:56:21.865968Z"
+  },
+  {
+    "id": "37a3c6ff-0c71-4405-9ef5-2d1c9e5063ae",
+    "patientName": "Auto Test",
+    "patientId": "P-AUTO",
+    "roomNumber": "A101",
+    "medicine": "TestMed",
+    "dosage": "1 tab",
+    "notes": "WS check",
+    "doctorName": "Dr. Auto",
+    "robotId": "RBT-001",
+    "status": "cancelled",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-16T07:15:21.660633Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-16T07:15:21.660633Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "cancelled",
+        "at": "2026-05-16T07:15:36.010028Z",
+        "note": "Robot reset to available mode"
+      }
+    ],
+    "createdAt": "2026-05-16T07:15:21.660633Z",
+    "updatedAt": "2026-05-16T07:15:36.010028Z",
+    "cancelledAt": "2026-05-16T07:15:36.010028Z"
+  },
+  {
+    "id": "955ab58b-cfd6-46ff-abe2-4f4ee389c37c",
+    "patientName": "Srikanth",
+    "patientId": "P-1586",
+    "roomNumber": "A101",
+    "medicine": "Paracitamal",
+    "dosage": "500mg",
+    "notes": "",
+    "doctorName": "Raja",
+    "robotId": "RBT-001",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-15T09:50:23.190942Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-15T09:50:23.190942Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-05-15T09:51:00.830900Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-15T09:51:37.733190Z",
+        "note": "Robot passed room B-101"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-05-15T09:51:44.945464Z",
+        "note": "Robot reached room A101"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-05-16T06:59:32.391351Z",
+        "note": "Robot reached room A101"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-05-16T06:59:38.876085Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-05-15T09:50:23.190942Z",
+    "updatedAt": "2026-05-16T06:59:38.876085Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-05-15T09:51:00.830900Z",
+    "lastScannedTag": "NFC-A101",
+    "lastScannedRoom": "A101",
+    "arrivedAt": "2026-05-16T06:59:32.391351Z",
+    "deliveredAt": "2026-05-16T06:59:38.876085Z"
+  },
+  {
+    "id": "e15c569c-3408-4aad-8e9d-d71e8abf323d",
+    "patientName": "Srikanth",
+    "patientId": "P-1586",
+    "roomNumber": "A101",
+    "medicine": "Paracitamal",
+    "dosage": "500mg",
+    "notes": "take after meal",
+    "doctorName": "Raja",
+    "robotId": "RBT-001",
+    "status": "cancelled",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-14T18:20:53.382037Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-14T18:20:53.382037Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "cancelled",
+        "at": "2026-05-14T18:22:56.963140Z",
+        "note": "Robot reset to available mode"
+      }
+    ],
+    "createdAt": "2026-05-14T18:20:53.382037Z",
+    "updatedAt": "2026-05-14T18:22:56.963140Z",
+    "cancelledAt": "2026-05-14T18:22:56.963140Z"
+  },
+  {
+    "id": "a630d4d3-8766-4109-9914-a35b7e514a25",
+    "patientName": "srk22",
+    "patientId": "p-1",
+    "roomNumber": "A101",
+    "medicine": "aaabqqq",
+    "dosage": "3922",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-002",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-05-06T11:11:34.101242Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-05-06T11:11:34.101242Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:32:18.612036Z",
+        "note": "Robot passed room A102"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-05-14T18:19:17.266024Z",
+        "note": "Robot reached room A101"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-05-14T18:19:23.719688Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-05-06T11:11:34.101242Z",
+    "updatedAt": "2026-05-14T18:19:23.719688Z",
+    "lastScannedTag": "NFC-A101",
+    "lastScannedRoom": "A101",
+    "arrivedAt": "2026-05-14T18:19:17.266024Z",
+    "deliveredAt": "2026-05-14T18:19:23.719688Z"
+  },
+  {
+    "id": "b8ec841c-e8e5-438b-b511-5b53de4903b2",
+    "patientName": "sss",
+    "patientId": "p-1",
+    "roomNumber": "B-102",
+    "medicine": "ddd",
+    "dosage": "200",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-001",
+    "status": "cancelled",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-04-30T21:22:44.574945Z",
+        "note": "Order placed by doctor"
+      },
+      {
+        "status": "moving_to_pharmacy",
+        "at": "2026-04-30T21:22:44.574945Z",
+        "note": "Robot moving to pharmacy"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-05-06T11:13:16.494789Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:30:02.604885Z",
+        "note": "Robot passed room A101"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:30:23.850662Z",
+        "note": "Robot passed room A102"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:30:29.675895Z",
+        "note": "Robot passed room B201"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:30:35.324874Z",
+        "note": "Robot passed room B202"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:30:42.545295Z",
+        "note": "Robot passed room B201"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:32:37.604244Z",
+        "note": "Robot passed room A102"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:32:43.043111Z",
+        "note": "Robot passed room B201"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T11:32:45.916922Z",
+        "note": "Robot passed room B202"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-06T12:45:00.030117Z",
+        "note": "Robot passed room A101"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-14T14:18:50.768209Z",
+        "note": "Robot passed room A101"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-14T14:19:11.764756Z",
+        "note": "Robot passed room A102"
+      },
+      {
+        "status": "in_transit",
+        "at": "2026-05-14T18:10:27.738935Z",
+        "note": "Robot passed room B201"
+      },
+      {
+        "status": "cancelled",
+        "at": "2026-05-14T18:17:23.372790Z",
+        "note": "Robot reset to available mode"
+      }
+    ],
+    "createdAt": "2026-04-30T21:22:44.574945Z",
+    "updatedAt": "2026-05-14T18:17:23.372790Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-05-06T11:13:16.494789Z",
+    "lastScannedTag": "NFC-B201",
+    "lastScannedRoom": "B201",
+    "cancelledAt": "2026-05-14T18:17:23.372790Z"
+  },
+  {
+    "id": "352d63c3-486c-4b4d-9900-5e4a8937e859",
+    "patientName": "srk",
+    "patientId": "p-02",
+    "roomNumber": "A102",
+    "medicine": "aaab",
+    "dosage": "200",
+    "notes": "",
+    "doctorName": "a",
+    "robotId": "RBT-002",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-04-30T15:07:27.902663Z",
+        "note": "Doctor assigned task"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-04-30T21:23:10.754051Z",
+        "note": "Robot reached room A102"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-04-30T21:23:34.490145Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-04-30T15:07:27.902663Z",
+    "updatedAt": "2026-04-30T21:23:34.490145Z",
+    "lastScannedTag": "NFC-A102",
+    "lastScannedRoom": "A102",
+    "arrivedAt": "2026-04-30T21:23:10.754051Z",
+    "deliveredAt": "2026-04-30T21:23:34.490145Z"
+  },
+  {
+    "id": "3168baa0-2a66-4c2d-90ed-b138fb270d56",
+    "patientName": "srk",
+    "patientId": "p-1",
+    "roomNumber": "A101",
+    "medicine": "aaab",
+    "dosage": "39",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-001",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-04-30T15:06:55.114957Z",
+        "note": "Doctor assigned task"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-04-30T15:47:37.831581Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-04-30T21:21:17.164390Z",
+        "note": "Robot reached room A101"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-04-30T21:21:31.058675Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-04-30T15:06:55.114957Z",
+    "updatedAt": "2026-04-30T21:21:31.058675Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-04-30T15:47:37.831581Z",
+    "lastScannedTag": "NFC-A101",
+    "lastScannedRoom": "A101",
+    "arrivedAt": "2026-04-30T21:21:17.164390Z",
+    "deliveredAt": "2026-04-30T21:21:31.058675Z"
+  },
+  {
+    "id": "78261abc-0619-42e0-8f5d-2f2cc024ec40",
+    "patientName": "venkat",
+    "patientId": "p02",
+    "roomNumber": "A102",
+    "medicine": "hdkf",
+    "dosage": "300",
+    "notes": "",
+    "doctorName": "drk",
+    "robotId": "RBT-002",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-04-30T14:53:13.531586Z",
+        "note": "Doctor assigned task"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-04-30T14:56:17.280079Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-04-30T14:57:01.668550Z",
+        "note": "Robot reached room A102"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-04-30T14:57:24.149459Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-04-30T14:53:13.531586Z",
+    "updatedAt": "2026-04-30T14:57:24.149459Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-04-30T14:56:17.280079Z",
+    "lastScannedTag": "NFC-A102",
+    "lastScannedRoom": "A102",
+    "arrivedAt": "2026-04-30T14:57:01.668550Z",
+    "deliveredAt": "2026-04-30T14:57:24.149459Z"
+  },
+  {
+    "id": "0397dd2d-4b80-46de-94ae-0daa3067c2bf",
+    "patientName": "srk",
+    "patientId": "p-1",
+    "roomNumber": "A101",
+    "medicine": "aaab",
+    "dosage": "39",
+    "notes": "",
+    "doctorName": "srk",
+    "robotId": "RBT-001",
+    "status": "delivered",
+    "route": [
+      {
+        "status": "assigned",
+        "at": "2026-04-30T14:52:22.325380Z",
+        "note": "Doctor assigned task"
+      },
+      {
+        "status": "dispatched",
+        "at": "2026-04-30T14:53:56.492769Z",
+        "note": "Medicine loaded by Pharmacist"
+      },
+      {
+        "status": "arrived",
+        "at": "2026-04-30T14:54:10.547536Z",
+        "note": "Robot reached room A101"
+      },
+      {
+        "status": "delivered",
+        "at": "2026-04-30T14:54:24.527990Z",
+        "note": "Medicine compartment released"
+      }
+    ],
+    "createdAt": "2026-04-30T14:52:22.325380Z",
+    "updatedAt": "2026-04-30T14:54:24.527990Z",
+    "pharmacistName": "Pharmacist",
+    "dispatchedAt": "2026-04-30T14:53:56.492769Z",
+    "lastScannedTag": "NFC-A101",
+    "lastScannedRoom": "A101",
+    "arrivedAt": "2026-04-30T14:54:10.547536Z",
+    "deliveredAt": "2026-04-30T14:54:24.527990Z"
+  }
+]

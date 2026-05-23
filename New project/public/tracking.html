@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Tracking | Medicine Delivery Robot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Tracking workspace</p>
+        <h1>Live Medicine Tracking</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-pill" id="serverStatus">Connecting</span>
+        <button class="secondary" id="logoutButton" type="button">Logout</button>
+      </div>
+    </header>
+    <nav class="app-nav" id="appNav"></nav>
+
+    <main class="layout">
+      <section class="panel map-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Live hospital map</p>
+            <h2>Medicine tracking</h2>
+          </div>
+          <div class="map-summary" id="mapSummary">No active deliveries</div>
+        </div>
+        <div class="map-content">
+          <div class="hospital-map" id="hospitalMap">
+            <div class="map-zone zone-doctor"><span>Doctor Station</span></div>
+            <div class="map-zone zone-pharmacy"><span>Pharmacy</span></div>
+            <div class="map-zone zone-corridor"><span>Main Corridor</span></div>
+            <div class="map-zone zone-room-a101"><span>Room A101</span></div>
+            <div class="map-zone zone-room-a102"><span>Room A102</span></div>
+            <div class="map-zone zone-room-b201"><span>Room B201</span></div>
+            <div class="map-zone zone-room-b202"><span>Room B202</span></div>
+            <div class="map-path path-horizontal"></div>
+            <div class="map-path path-vertical"></div>
+            <div id="robotMarkers"></div>
+          </div>
+          <div class="tracking-board">
+            <label class="robot-filter">Tracking robot<select id="trackingRobotSelect"></select></label>
+            <div id="trackingSteps" class="tracking-steps"></div>
+            <div id="robotStatusList" class="robot-status-list"></div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel tasks-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Live queue</p>
+            <h2>Active tasks</h2>
+          </div>
+          <button id="refreshTasks" type="button">Refresh</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+
+    <template id="taskTemplate">
+      <article class="task-card">
+        <div class="task-topline">
+          <strong data-field="patient"></strong>
+          <span data-field="status" class="task-status"></span>
+        </div>
+        <div class="task-meta" data-field="meta"></div>
+        <div class="task-medicine" data-field="medicine"></div>
+        <ol data-field="route" class="route-list"></ol>
+      </article>
+    </template>
+    <script src="/app.js"></script>
+  </body>
+</html>

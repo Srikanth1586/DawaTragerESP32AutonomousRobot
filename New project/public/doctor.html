@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Doctor | Medicine Delivery Robot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Doctor workspace</p>
+        <h1>Assign Medicine</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-pill" id="serverStatus">Connecting</span>
+        <button class="secondary" id="logoutButton" type="button">Logout</button>
+      </div>
+    </header>
+    <nav class="app-nav" id="appNav"></nav>
+
+    <main class="layout">
+      <section class="panel doctor-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Prescription task</p>
+            <h2>Assign delivery to robot</h2>
+          </div>
+        </div>
+        <form id="doctorForm" class="form-grid">
+          <label>Patient name<input name="patientName" required placeholder="Anika Rao"></label>
+          <label>Patient ID<input name="patientId" required placeholder="P-1042"></label>
+          <label>Room number<select name="roomNumber" id="roomSelect" required></select></label>
+          <label>Doctor name<input name="doctorName" required placeholder="Dr. Sharma"></label>
+          <label>Medicine<input name="medicine" required placeholder="Amoxicillin"></label>
+          <label>Dosage<input name="dosage" required placeholder="500 mg, twice daily"></label>
+          <label>Robot<select name="robotId" id="robotSelect" required></select></label>
+          <label class="full">Notes<textarea name="notes" rows="3" placeholder="After food"></textarea></label>
+          <button type="submit">Assign to robot</button>
+        </form>
+      </section>
+
+      <section class="panel tasks-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Doctor view</p>
+            <h2>Current orders</h2>
+          </div>
+          <button id="refreshTasks" type="button">Refresh</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+
+    <template id="taskTemplate">
+      <article class="task-card">
+        <div class="task-topline">
+          <strong data-field="patient"></strong>
+          <span data-field="status" class="task-status"></span>
+        </div>
+        <div class="task-meta" data-field="meta"></div>
+        <div class="task-medicine" data-field="medicine"></div>
+        <ol data-field="route" class="route-list"></ol>
+      </article>
+    </template>
+    <script src="/app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Login | Medicine Delivery Robot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body class="login-body">
+    <main class="login-shell">
+      <section class="login-panel">
+        <p class="eyebrow">Hospital robot dispatch</p>
+        <h1>Medicine Delivery Control</h1>
+        <p class="login-copy">Sign in with your assigned role to open the matching workspace.</p>
+
+        <form id="loginForm" class="login-form">
+          <label>
+            Username
+            <input name="username" required autocomplete="username" placeholder="doctor">
+          </label>
+          <label>
+            Password
+            <input name="password" required type="password" autocomplete="current-password" placeholder="doctor123">
+          </label>
+          <button type="submit">Sign in</button>
+          <p id="loginMessage" class="form-message"></p>
+        </form>
+
+        <div class="demo-credentials">
+          <strong>Demo credentials</strong>
+          <span>doctor / doctor123</span>
+          <span>pharmacy / pharmacy123</span>
+          <span>tracking / tracking123</span>
+          <span>robot / robot123</span>
+          <span>history / history123</span>
+          <span>admin / admin123</span>
+        </div>
+      </section>
+    </main>
+    <script src="/login.js"></script>
+  </body>
+</html>

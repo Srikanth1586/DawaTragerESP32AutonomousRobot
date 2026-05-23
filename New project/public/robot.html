@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Robot | Medicine Delivery Robot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Robot workspace</p>
+        <h1>Robot Test Console</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-pill" id="serverStatus">Connecting</span>
+        <button class="secondary" id="logoutButton" type="button">Logout</button>
+      </div>
+    </header>
+    <nav class="app-nav" id="appNav"></nav>
+
+    <main class="layout">
+      <section class="panel robot-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Robot simulation</p>
+            <h2>NFC route scanning</h2>
+          </div>
+        </div>
+        <div class="lookup-row">
+          <select id="robotConsoleSelect"></select>
+          <select id="nfcTagSelect"></select>
+          <button id="scanNfc" type="button">Scan NFC</button>
+          <button id="resetRobot" class="secondary" type="button">Reset robot</button>
+        </div>
+        <div id="robotConsole" class="empty-state">Dispatch a task, then scan room tags here.</div>
+      </section>
+
+      <section class="panel tasks-panel">
+        <div class="panel-header">
+          <div>
+            <p class="eyebrow">Robot assignments</p>
+            <h2>Active robot tasks</h2>
+          </div>
+          <button id="refreshTasks" type="button">Refresh</button>
+        </div>
+        <div id="taskList" class="task-list"></div>
+      </section>
+    </main>
+
+    <template id="taskTemplate">
+      <article class="task-card">
+        <div class="task-topline">
+          <strong data-field="patient"></strong>
+          <span data-field="status" class="task-status"></span>
+        </div>
+        <div class="task-meta" data-field="meta"></div>
+        <div class="task-medicine" data-field="medicine"></div>
+        <ol data-field="route" class="route-list"></ol>
+      </article>
+    </template>
+    <script src="/app.js"></script>
+  </body>
+</html>

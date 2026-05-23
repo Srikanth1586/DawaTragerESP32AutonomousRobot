@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Admin Dashboard | Medicine Delivery Robot</title>
+    <link rel="stylesheet" href="/styles.css">
+  </head>
+  <body>
+    <header class="app-header">
+      <div>
+        <p class="eyebrow">Admin dashboard</p>
+        <h1>Medicine Delivery Control</h1>
+      </div>
+      <div class="header-actions">
+        <span class="status-pill" id="serverStatus">Connecting</span>
+        <button class="secondary" id="logoutButton" type="button">Logout</button>
+      </div>
+    </header>
+
+    <nav class="admin-tabs" aria-label="Admin dashboard tabs">
+      <button class="admin-tab active" type="button" data-tab="doctor">Doctor</button>
+      <button class="admin-tab" type="button" data-tab="pharmacy">Pharmacy</button>
+      <button class="admin-tab" type="button" data-tab="tracking">Tracking</button>
+      <button class="admin-tab" type="button" data-tab="robot">Robot</button>
+      <button class="admin-tab" type="button" data-tab="history">History</button>
+      <button class="admin-tab" type="button" data-tab="chat">ESP32 Chat</button>
+    </nav>
+
+    <main class="admin-dashboard">
+      <section class="admin-tab-panel active" id="tab-doctor">
+        <iframe class="admin-frame" title="Doctor Page" src="/doctor.html?embedded=1"></iframe>
+      </section>
+
+      <section class="admin-tab-panel" id="tab-pharmacy">
+        <iframe class="admin-frame" title="Pharmacy Page" src="/pharmacy.html?embedded=1"></iframe>
+      </section>
+
+      <section class="admin-tab-panel" id="tab-tracking">
+        <iframe class="admin-frame" title="Tracking Page" src="/tracking.html?embedded=1"></iframe>
+      </section>
+
+      <section class="admin-tab-panel" id="tab-robot">
+        <iframe class="admin-frame" title="Robot Page" src="/robot.html?embedded=1"></iframe>
+      </section>
+
+      <section class="admin-tab-panel" id="tab-history">
+        <iframe class="admin-frame" title="Order History Tracking" src="/history.html?embedded=1"></iframe>
+      </section>
+
+      <section class="admin-tab-panel" id="tab-chat">
+        <div class="layout admin-layout">
+          <section class="panel chat-panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Robot link</p>
+                <h2>Server and ESP32 chat</h2>
+              </div>
+              <span class="status-pill" id="robotAliveStatus">Waiting for robot</span>
+            </div>
+
+            <div class="chat-body">
+              <aside class="robot-chat-list" id="robotChatList"></aside>
+              <div class="chat-window" id="chatWindow">
+                <div class="empty-state">No robot messages yet.</div>
+              </div>
+            </div>
+
+            <form class="chat-compose" id="chatForm">
+              <div class="selected-robot-chip" id="selectedRobotLabel">RBT-001</div>
+              <input id="messageInput" placeholder="Type a test message for the robot" autocomplete="off">
+              <button type="submit">Send</button>
+            </form>
+          </section>
+
+          <section class="panel">
+            <div class="panel-header">
+              <div>
+                <p class="eyebrow">Testing endpoints</p>
+                <h2>ESP32 calls</h2>
+              </div>
+            </div>
+            <div class="endpoint-list">
+              <div>
+                <strong>Heartbeat</strong>
+                <code>{"type":"heartbeat","robotId":"RBT-001"}</code>
+              </div>
+              <div>
+                <strong>Robot message</strong>
+                <code>{"type":"robot_message","robotId":"RBT-001","message":"Hello from ESP32"}</code>
+              </div>
+              <div>
+                <strong>WebSocket URL</strong>
+                <code>ws://SERVER_IP:3000/ws/robot-chat</code>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <script src="/admin.js"></script>
+  </body>
+</html>
