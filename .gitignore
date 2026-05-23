@@ -1,0 +1,17 @@
+# PlatformIO / Embedded ignores
+.pio/
+.clang_complete
+.gcc-flags.json
+*.hex
+*.bin
+
+# Software / Web / UI ignores
+node_modules/
+.env
+dist/
+build/
+*.log
+
+# OS ignores
+.DS_Store
+Thumbs.db
