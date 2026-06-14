@@ -1,15 +1,64 @@
 #include "Comm.h"
-
+#include "Config.h"
 #include <WiFi.h>
 #include <WebSocketsClient.h>
 #include <ArduinoJson.h>
+#include "structs.h"
+#include "queue_manager.h"
+#include "event_manager.h"
+#include "system_state.h"
+#include "robot_state.h"
+#include "servo_driver.h" 
+// ======================================================
+// WEBSOCKET OBJECT
+// ======================================================
+
+WebSocketsClient webSocket;
+
+// Server connection status
+bool serverConnected = false;
+extern RobotState robotState;
+// ======================================================
+// JSON DATA STRUCTURE
+// ======================================================
+static bool extractRobotCommand(
+    const String& json,
+    RobotCommand_t& cmd)
+{
+    JsonDocument doc;
+
+    DeserializationError error =
+        deserializeJson(doc, json);
+
+    if(error)
+    {
+        Serial.println("[WS] JSON Parse Failed");
+        return false;
+    }
+    Serial.println("[WS] JSON Parsed Successfully");
+    cmd.type =
+        doc["type"] | "";
+
+    cmd.robotId =
+        doc["robotId"] | "";
+
+    cmd.command =
+        doc["command"] | "";
+
+    cmd.roomNumber =
+        doc["task"]["roomNumber"] | 0;
+
+    return true;
+}
+
+
 
 // ======================================================
 // WIFI CONFIGURATION
 // ======================================================
 
-const char* ssid = "Bommarillu 2.4G";
-const char* password = "theboys@123";
+const char* ssid = WIFI_SSID;
+const char* password = WIFI_PASSWORD;
 
 // ======================================================
 // WEBSOCKET SERVER
@@ -17,54 +66,71 @@ const char* password = "theboys@123";
 
 // Replace with your PC IP
 
-const char* websocket_host = "192.168.178.66";
+const char* websocket_host = WEBSOCKET_HOST;
+const uint16_t websocket_port = WEBSOCKET_PORT;
 
-const uint16_t websocket_port = 3000;
-
-const char* websocket_path = "/ws/robot-chat";
+const char* websocket_path = WEBSOCKET_PATH;
 
 // ======================================================
 // ROBOT CONFIG
 // ======================================================
 
-String robotID = "RBT-001";
+String robotID = ROBOT_ID;
 
-// ======================================================
-// WEBSOCKET OBJECT
-// ======================================================
 
-WebSocketsClient webSocket;
 
 // ======================================================
 // FREERTOS QUEUE
 // ======================================================
 
 QueueHandle_t messageQueue;
+//=====================================================
+// JSON DATA ExTRACTION STRUCTURE
+// ======================================================
+extern QueueHandle_t commandQueue;
 
 // ======================================================
 // WIFI INITIALIZATION
 // ======================================================
 
-void initWiFi()
+bool initWiFi()
 {
     Serial.println();
     Serial.println("Connecting to WiFi...");
 
     WiFi.begin(ssid, password);
 
-    while(WiFi.status() != WL_CONNECTED)
+    int attempts = 0;
+    while(WiFi.status() != WL_CONNECTED && attempts < 20)
     {
         Serial.print(".");
-
         vTaskDelay(pdMS_TO_TICKS(500));
+        attempts++;
     }
 
     Serial.println();
-    Serial.println("WiFi Connected");
+    
+    if(WiFi.status() == WL_CONNECTED)
+    {
+        Serial.println("WiFi Connected");
+        Serial.print("ESP32 IP: ");
+        Serial.println(WiFi.localIP());
+        return true;
+    }
+    else
+    {
+        Serial.println("WiFi Connection Failed");
+        return false;
+    }
+}
 
-    Serial.print("ESP32 IP: ");
+// ======================================================
+// GET WIFI STATUS
+// ======================================================
 
-    Serial.println(WiFi.localIP());
+bool getWiFiStatus()
+{
+    return (WiFi.status() == WL_CONNECTED);
 }
 
 // ======================================================
@@ -73,7 +139,7 @@ void initWiFi()
 
 void sendHeartbeat()
 {
-    StaticJsonDocument<200> doc;
+    JsonDocument doc;
 
     doc["type"] = "heartbeat";
 
@@ -94,7 +160,7 @@ void sendHeartbeat()
 
 void sendRobotMessage(String message)
 {
-    StaticJsonDocument<256> doc;
+    JsonDocument doc;
 
     doc["type"] = "robot_message";
 
@@ -114,6 +180,15 @@ void sendRobotMessage(String message)
 }
 
 // ======================================================
+// GET SERVER CONNECTION STATUS
+// ======================================================
+
+bool getServerStatus()
+{
+    return serverConnected;
+}
+
+// ======================================================
 // WEBSOCKET EVENT CALLBACK
 // ======================================================
 
@@ -126,12 +201,10 @@ void webSocketEvent(WStype_t type,
         // ==========================================
         // CONNECTED
         // ==========================================
-        Serial.println(type);
-
         case WStype_CONNECTED:
         {
             Serial.println("[WS] Connected to Server" );
-
+            serverConnected = true;
             sendRobotMessage("ESP32 Connected");
 
             break;
@@ -144,7 +217,7 @@ void webSocketEvent(WStype_t type,
         case WStype_DISCONNECTED:
         {
             Serial.println("[WS] Disconnected");
-
+            serverConnected = false;
             break;
         }
 
@@ -152,37 +225,51 @@ void webSocketEvent(WStype_t type,
         // TEXT MESSAGE RECEIVED
         // ==========================================
 
-        case WStype_TEXT:
+             case WStype_TEXT:
         {
-            String receivedMessage =
+        String receivedMessage =
             String((char*)payload);
 
-            Serial.print("[WS] Received: ");
+        RobotCommand_t cmd;
 
+            if(extractRobotCommand( receivedMessage, cmd))
+            {
+            Serial.println("----- COMMAND -----");
             Serial.println(receivedMessage);
+            Serial.println(cmd.type);
+            Serial.println(cmd.robotId);
+            Serial.println(cmd.command);
+            Serial.println(cmd.roomNumber);
 
-            // ======================================
-            // CHECK SERVER COMMANDS
-            // ======================================
-
-            if(receivedMessage == "Are you there?")
+            // ==========================================
+            // HANDLE DOOR COMMANDS IMMEDIATELY
+            // ==========================================
+            
+            if(cmd.command == "open_l_box_door")
             {
-                // Send response immediately
-
-                sendRobotMessage("I am alive");
+                controlDoor(DOOR_L_BOX, DOOR_OPEN);
+                sendRobotMessage("L_BOX_DOOR opened");
             }
-
-            // Example Future Command
-
-            if(receivedMessage == "GO_TO_PHARMACY")
+            else if(cmd.command == "close_l_box_door")
             {
-                Serial.println("Navigation Command Received");
-
-                String msg = "Moving to Pharmacy";
-
-                xQueueSend(messageQueue,
-                           &msg,
-                           portMAX_DELAY);
+                controlDoor(DOOR_L_BOX, DOOR_CLOSE);
+                sendRobotMessage("L_BOX_DOOR closed");
+            }
+            else if(cmd.command == "open_m_box_door")
+            {
+                controlDoor(DOOR_M_BOX, DOOR_OPEN);
+                sendRobotMessage("M_BOX_DOOR opened");
+            }
+            else if(cmd.command == "close_m_box_door")
+            {
+                controlDoor(DOOR_M_BOX, DOOR_CLOSE);
+                sendRobotMessage("M_BOX_DOOR closed");
+            }
+            else
+            {
+                // Queue command for other processing
+                xQueueSend(commandQueue, &cmd, 0);
+            }
             }
 
             break;
@@ -229,6 +316,11 @@ void communicationTask(void *pvParameters)
         // ==========================================
 
         webSocket.loop();
+
+         // ==========================================
+        // UPDATE SERVER STATUS IN ROBOT STATE
+        // ==========================================
+        robotState.serverConnected = serverConnected;
 
         // ==========================================
         // SEND HEARTBEAT EVERY 5 SEC

@@ -100,6 +100,28 @@ void drawWifiIcon(int x, int y, WifiStatus status)
         }
     }
 }
+// ==========================   
+// Draw Server Icon
+// ==========================
+void drawServerIcon(int x, int y, bool connected)
+{
+    // Draw computer/monitor outline
+    u8g2.drawFrame(x - 6, y - 4, 12, 6);  // Screen
+    u8g2.drawBox(x - 2, y + 2, 4, 1);     // Stand
+    
+    if (connected)
+    {
+        // Connected: draw checkmark inside
+       // u8g2.drawLine(x - 3, y - 1, x - 1, y + 1);
+       // u8g2.drawLine(x - 1, y + 1, x + 3, y - 2);
+    }
+    else
+    {
+        // Disconnected: draw X inside
+        u8g2.drawLine(x - 4, y - 3, x + 2, y + 1);
+        u8g2.drawLine(x - 4, y + 1, x + 2, y - 3);
+    }
+}
 
 void drawNotificationBar()
 {
@@ -126,9 +148,9 @@ void drawNotificationBar()
     WifiStatus wifiStatus = robotState.wifiConnected ? WIFI_CONNECTED : WIFI_DISCONNECTED;
     drawWifiIcon(50, 7, wifiStatus);
 
-    // Mode
-    u8g2.drawStr(62, 9,
-                 robotState.mode);
+    // Server connection status
+    // Server connection status icon
+    drawServerIcon(75, 7, robotState.serverConnected);
 
     // Current task short name
     u8g2.drawStr(95, 9,

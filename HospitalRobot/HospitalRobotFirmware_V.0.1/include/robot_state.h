@@ -21,3 +21,11 @@ struct RobotState
 };
 
 extern RobotState robotState;
+
+enum RobotMode
+{
+    STATE_IDLE,
+    STATE_LINE_FOLLOW,
+    STATE_NFC_ACTION,
+    STATE_STOP
+};

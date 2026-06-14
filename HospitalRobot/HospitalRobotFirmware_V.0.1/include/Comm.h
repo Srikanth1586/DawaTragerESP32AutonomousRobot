@@ -13,9 +13,12 @@ extern QueueHandle_t messageQueue;
 // FUNCTIONS
 // =========================
 
-void initWiFi();
+bool initWiFi();
+bool getWiFiStatus();
 
 void initWebSocket();
+bool getServerStatus();
+void servoInit();
 
 void sendHeartbeat();
 
