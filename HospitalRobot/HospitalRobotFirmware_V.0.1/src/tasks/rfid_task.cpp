@@ -79,24 +79,16 @@ void RFIDMonitorTask(void *pvParameters)
                     Serial.print("Room No   : ");
                     Serial.println(card.roomNumber);
 
-                    char statusBuffer[24];
-                    snprintf(statusBuffer, sizeof(statusBuffer), "AT %s", card.location);
-                    strncpy(robotState.statusMessage, statusBuffer, sizeof(robotState.statusMessage) - 1);
-                    robotState.statusMessage[sizeof(robotState.statusMessage) - 1] = '\0';
+                    strncpy(robotState.currentPos, card.location, sizeof(robotState.currentPos) - 1);
+                    robotState.currentPos[sizeof(robotState.currentPos) - 1] = '\0';
                 }
                 else
                 {
                     Serial.println("❌ Unknown RFID Card");
-                    strncpy(robotState.statusMessage, "UNKNOWN CARD", sizeof(robotState.statusMessage) - 1);
-                    robotState.statusMessage[sizeof(robotState.statusMessage) - 1] = '\0';
-                }
-
-                Serial.println("═══════════════════════════════════");
-
-                // Send NFC status to server
-                sendRFIDDataToServer(&card);
-        }
-
+                    strncpy(robotState.currentPos, "UNKNOWN", sizeof(robotState.currentPos) - 1);
+                    robotState.currentPos[sizeof(robotState.currentPos) - 1] = '\0';
         vTaskDelay(pdMS_TO_TICKS(100));
+    }
+}
     }
 }

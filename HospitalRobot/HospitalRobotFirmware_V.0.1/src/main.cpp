@@ -53,9 +53,11 @@ void setup()
     robotState.wifiConnected = false;
     robotState.batteryPercent = 20;
     robotState.charging = true;
-    strcpy(robotState.mode, "BOOT");
-    strcpy(robotState.currentTask, "INIT");
-    strcpy(robotState.statusMessage, "READY");
+    strcpy(robotState.mode, "AUTO");
+    strcpy(robotState.currentTask, "DOCKING");
+    strcpy(robotState.statusMessage, "Heading to dock");
+    strcpy(robotState.currentPos, "SEARCHING");
+    currentState = STATE_SEARCH_DOCK;
     xTaskCreatePinnedToCore(
         oledTask,
         "Test Runner    Task",

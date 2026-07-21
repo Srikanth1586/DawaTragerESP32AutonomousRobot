@@ -13,7 +13,7 @@ RobotMode currentState = STATE_SEARCH_DOCK;
 
 MotorCommand_t motorCmd;
 EncoderData_t encData;
-ToFData_t tofData;
+//ToFData_t tofData;
 char destinationRoom[16] = "";
 bool adminDoorOpen = false;
 

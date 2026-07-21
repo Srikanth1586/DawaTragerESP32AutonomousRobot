@@ -20,9 +20,9 @@ struct RobotState
     char currentTask[20];
 
     char statusMessage[24];
-};
 
-extern RobotState robotState;
+    char currentPos[24];
+};
 
 enum RobotMode
 {
@@ -35,3 +35,6 @@ enum RobotMode
     STATE_RETURN_TO_DOCK,
     STATE_STOP
 };
+
+extern RobotState robotState;
+extern RobotMode currentState;

@@ -66,9 +66,9 @@
 // ====================================
 // COMMUNICATION CONFIG
 // ====================================
-#define WIFI_SSID              "Bommarillu 2.4G"
-#define WIFI_PASSWORD          "theboys@123"
-#define WEBSOCKET_HOST         "192.168.178.66"
+#define WIFI_SSID              "Spider"
+#define WIFI_PASSWORD          "12Aberlour"
+#define WEBSOCKET_HOST         "192.168.178.113"
 #define WEBSOCKET_PORT         3000
 #define WEBSOCKET_PATH         "/ws/robot-chat"
 #define ROBOT_ID               "RBT-001"
@@ -87,8 +87,8 @@
 // ====================================
 // MOTOR PARAMETERS
 // ====================================
-#define MAX_SPEED              255
-#define BASE_SPEED             225
+#define MAX_SPEED              175
+#define BASE_SPEED             170
 
 // ====================================
 // RTOS CONFIGURATION

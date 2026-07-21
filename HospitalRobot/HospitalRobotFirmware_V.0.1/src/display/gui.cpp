@@ -28,19 +28,41 @@ void oledTask(void *pvParameters)
 
         // Demo center text
         u8g2.setFont(u8g2_font_ncenB08_tr);
-
-        u8g2.drawStr(18,
+        const char *title = "HOSPITAL ROBOT";
+        int16_t titleWidth = u8g2.getUTF8Width(title);
+        int16_t titleX = max(0, (128 - titleWidth) / 2);
+        u8g2.drawStr(titleX,
                      35,
-                     "HOSPITAL ROBOT");
+                     title);
 
         u8g2.setFont(u8g2_font_6x10_tf);
 
-        char statusText[40];
-        snprintf(statusText, sizeof(statusText), "STATUS: %s", robotState.statusMessage);
+        char stateText[40];
+        if (millis() < 5000)
+        {
+            snprintf(stateText, sizeof(stateText), "INIT");
+        }
+        else if (strcmp(robotState.currentTask, "INIT") == 0)
+        {
+            snprintf(stateText, sizeof(stateText), "DOCKING");
+        }
+        else
+        {
+            snprintf(stateText, sizeof(stateText), "%s", robotState.currentTask);
+        }
+        int16_t stateWidth = u8g2.getUTF8Width(stateText);
+        int16_t stateX = max(0, (128 - stateWidth) / 2);
+        u8g2.drawStr(stateX,
+                     48,
+                     stateText);
 
-        u8g2.drawStr(8,
-                     52,
-                     statusText);
+        char posText[40];
+        snprintf(posText, sizeof(posText), "POS: %s", robotState.currentPos);
+        int16_t posWidth = u8g2.getUTF8Width(posText);
+        int16_t posX = max(0, (128 - posWidth) / 2);
+        u8g2.drawStr(posX,
+                     62,
+                     posText);
 
         // Send buffer to OLED
         u8g2.sendBuffer();

@@ -3,6 +3,7 @@
 #include "queue_manager.h"
 #include "structs.h"
 #include "config.h"
+#include "robot_state.h"
 
 void LineFollowTask(void *pvParameters)
 {
@@ -13,6 +14,20 @@ void LineFollowTask(void *pvParameters)
 
     while (1)
     {
+        // Only run the line follower in active motion states
+        if (!(currentState == STATE_SEARCH_DOCK ||
+              currentState == STATE_GO_TO_PHARMACY ||
+              currentState == STATE_SEARCH_DESTINATION ||
+              currentState == STATE_RETURN_TO_DOCK))
+        {
+            cmd.motion = MOTION_STOP;
+            cmd.leftSpeed = 0;
+            cmd.rightSpeed = 0;
+            xQueueSend(motorQueue, &cmd, 0);
+            vTaskDelay(pdMS_TO_TICKS(10));
+            continue;
+        }
+
         // =====================
         // 1. Read sensors
         // =====================
@@ -35,8 +50,8 @@ void LineFollowTask(void *pvParameters)
         int leftSpeed  = baseSpeed - correction;
         int rightSpeed = baseSpeed + correction;
 
-        leftSpeed  = constrain(leftSpeed, 0, 255);
-        rightSpeed = constrain(rightSpeed, 0, 255);
+        leftSpeed  = constrain(leftSpeed, 0, 200);
+        rightSpeed = constrain(rightSpeed, 0, 200);
         // =====================
         // 4. Lost line handling
         // =====================
@@ -48,7 +63,7 @@ void LineFollowTask(void *pvParameters)
 
             xQueueSend(motorQueue, &cmd, 0);
 
-            vTaskDelay(pdMS_TO_TICKS(50));
+            vTaskDelay(pdMS_TO_TICKS(10));
             continue;
         }
         else if (L == 1 && R == 0)
@@ -56,7 +71,7 @@ void LineFollowTask(void *pvParameters)
            
             cmd.motion = MOTION_LEFT;
             cmd.leftSpeed = 100;
-            cmd.rightSpeed = 255;
+            cmd.rightSpeed = 200;
             //Serial.println("Turning Left");
             xQueueSend(motorQueue, &cmd, 0);
 
@@ -64,7 +79,7 @@ void LineFollowTask(void *pvParameters)
         else if (L == 0 && R == 1)
         {
             cmd.motion = MOTION_RIGHT;
-            cmd.leftSpeed = 255;
+            cmd.leftSpeed = 200;
             cmd.rightSpeed = 100;
             //Serial.println("Turning Right");
             xQueueSend(motorQueue, &cmd, 0);
@@ -101,6 +116,6 @@ void LineFollowTask(void *pvParameters)
         Serial.print(" RS:");
         Serial.println(rightSpeed);*/
 
-        vTaskDelay(pdMS_TO_TICKS(10));
+        vTaskDelay(pdMS_TO_TICKS(5));
     }
 }
