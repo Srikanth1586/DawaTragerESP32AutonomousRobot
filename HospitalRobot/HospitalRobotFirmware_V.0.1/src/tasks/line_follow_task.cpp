@@ -8,7 +8,7 @@ void LineFollowTask(void *pvParameters)
 {
     MotorCommand_t cmd;
 
-    float Kp = 80.0;     // tuning parameter
+    float Kp = 50.0;     // tuning parameter
     int baseSpeed = BASE_SPEED;
 
     while (1)
@@ -30,7 +30,13 @@ void LineFollowTask(void *pvParameters)
         // 3. Compute error
         // =====================
         int error = R - L;
+        float correction = Kp * error;
 
+        int leftSpeed  = baseSpeed - correction;
+        int rightSpeed = baseSpeed + correction;
+
+        leftSpeed  = constrain(leftSpeed, 0, 255);
+        rightSpeed = constrain(rightSpeed, 0, 255);
         // =====================
         // 4. Lost line handling
         // =====================
@@ -45,31 +51,46 @@ void LineFollowTask(void *pvParameters)
             vTaskDelay(pdMS_TO_TICKS(50));
             continue;
         }
+        else if (L == 1 && R == 0)
+        {
+           
+            cmd.motion = MOTION_LEFT;
+            cmd.leftSpeed = 100;
+            cmd.rightSpeed = 255;
+            //Serial.println("Turning Left");
+            xQueueSend(motorQueue, &cmd, 0);
+
+        }
+        else if (L == 0 && R == 1)
+        {
+            cmd.motion = MOTION_RIGHT;
+            cmd.leftSpeed = 255;
+            cmd.rightSpeed = 100;
+            //Serial.println("Turning Right");
+            xQueueSend(motorQueue, &cmd, 0);
+        }
+        else if (L == 1 && R == 1)
+        {
+            cmd.motion = MOTION_FORWARD;
+            cmd.leftSpeed = leftSpeed;
+            cmd.rightSpeed = rightSpeed;
+            //Serial.println("Going Forward");
+        xQueueSend(motorQueue, &cmd, 0);
+        }
 
         // =====================
         // 5. Correction
         // =====================
-        float correction = Kp * error;
 
-        int leftSpeed  = baseSpeed - correction;
-        int rightSpeed = baseSpeed + correction;
-
-        leftSpeed  = constrain(leftSpeed, 0, 255);
-        rightSpeed = constrain(rightSpeed, 0, 255);
 
         // =====================
         // 6. Motor command
         // =====================
-        cmd.motion = MOTION_FORWARD;
-        cmd.leftSpeed = leftSpeed;
-        cmd.rightSpeed = rightSpeed;
-
-        xQueueSend(motorQueue, &cmd, 0);
 
         // =====================
         // 7. Debug
         // =====================
-        Serial.print("L:");
+     /*   Serial.print("L:");
         Serial.print(L);
         Serial.print(" R:");
         Serial.print(R);
@@ -78,7 +99,7 @@ void LineFollowTask(void *pvParameters)
         Serial.print(" LS:");
         Serial.print(leftSpeed);
         Serial.print(" RS:");
-        Serial.println(rightSpeed);
+        Serial.println(rightSpeed);*/
 
         vTaskDelay(pdMS_TO_TICKS(10));
     }

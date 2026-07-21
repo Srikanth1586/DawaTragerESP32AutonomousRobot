@@ -5,8 +5,9 @@
 #define PWM_FREQ       1000
 #define PWM_RESOLUTION 8
 
-#define LEFT_PWM_CH    0
-#define RIGHT_PWM_CH   1
+// Avoid using LEDC channels 0 and 1 because ESP32Servo may allocate them for servos.
+#define LEFT_PWM_CH    2
+#define RIGHT_PWM_CH   3
 
 void motorInit()
 {
@@ -61,20 +62,6 @@ void turnLeft(int speed)
     speed = constrain(speed, 0, 255);
 
     // Left motor slower/stopped
-    digitalWrite(LEFT_MOTOR_IN1, LOW);
-    digitalWrite(LEFT_MOTOR_IN2, LOW);
-
-    digitalWrite(RIGHT_MOTOR_IN1, HIGH);
-    digitalWrite(RIGHT_MOTOR_IN2, LOW);
-
-    ledcWrite(LEFT_PWM_CH, 0);
-    ledcWrite(RIGHT_PWM_CH, speed);
-}
-
-void turnRight(int speed)
-{
-    speed = constrain(speed, 0, 255);
-
     digitalWrite(LEFT_MOTOR_IN1, HIGH);
     digitalWrite(LEFT_MOTOR_IN2, LOW);
 
@@ -82,7 +69,21 @@ void turnRight(int speed)
     digitalWrite(RIGHT_MOTOR_IN2, LOW);
 
     ledcWrite(LEFT_PWM_CH, speed);
-    ledcWrite(RIGHT_PWM_CH, 0);
+    //ledcWrite(RIGHT_PWM_CH, speed);
+}
+
+void turnRight(int speed)
+{
+    speed = constrain(speed, 0, 255);
+
+    digitalWrite(LEFT_MOTOR_IN1, LOW);
+    digitalWrite(LEFT_MOTOR_IN2, LOW);
+
+    digitalWrite(RIGHT_MOTOR_IN1, HIGH);
+    digitalWrite(RIGHT_MOTOR_IN2, LOW);
+
+    //ledcWrite(LEFT_PWM_CH, speed);
+    ledcWrite(RIGHT_PWM_CH, speed);
 }
 
 void stopMotors()

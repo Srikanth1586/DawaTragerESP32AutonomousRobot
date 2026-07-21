@@ -2,6 +2,7 @@
 #define COMM_H
 
 #include <Arduino.h>
+#include "rfid_data.h"
 
 // =========================
 // GLOBAL QUEUE
@@ -23,6 +24,9 @@ void servoInit();
 void sendHeartbeat();
 
 void sendRobotMessage(String message);
+
+// Send RFID data to server
+void sendRFIDDataToServer(const RFIDResult_t *rfidData);
 
 void communicationTask(void *pvParameters);
 

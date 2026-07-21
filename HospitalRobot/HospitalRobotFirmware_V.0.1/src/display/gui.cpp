@@ -35,9 +35,12 @@ void oledTask(void *pvParameters)
 
         u8g2.setFont(u8g2_font_6x10_tf);
 
-        u8g2.drawStr(30,
+        char statusText[40];
+        snprintf(statusText, sizeof(statusText), "STATUS: %s", robotState.statusMessage);
+
+        u8g2.drawStr(8,
                      52,
-                     "STATUS: READY");
+                     statusText);
 
         // Send buffer to OLED
         u8g2.sendBuffer();

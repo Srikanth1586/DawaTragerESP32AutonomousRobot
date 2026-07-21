@@ -9,10 +9,12 @@
 #include "Config.h"
 #include "motor_driver.h"
 #include "tof_driver.h"
-#include "nfc_driver.h"
+#include "rfid_driver.h"
 #include "Comm.h"
 #include "servo_driver.h"
 #include "System_state.h"
+#include <Esp32Servo.h>
+
 
 
 
@@ -28,7 +30,8 @@ extern void oledTask(void *pvParameters);
 void LineFollowTask(void *pvParameters);
 void MotorControlTask(void *pvParameters);
 void EncoderTask(void *pvParameters);
-void NFCTask(void *pvParameters);
+void RFIDTask(void *pvParameters);
+void RFIDMonitorTask(void *pvParameters);
 void ControlTask(void *pvParameters);
 void ToFTask(void *pvParameters);
 void communicationTask(void *pvParameters);
@@ -52,6 +55,7 @@ void setup()
     robotState.charging = true;
     strcpy(robotState.mode, "BOOT");
     strcpy(robotState.currentTask, "INIT");
+    strcpy(robotState.statusMessage, "READY");
     xTaskCreatePinnedToCore(
         oledTask,
         "Test Runner    Task",
@@ -65,6 +69,12 @@ void setup()
     // ======================
     initWiFi();
     initWebSocket();
+
+    // Configure sensor and servo pins before starting tasks
+    pinMode(IR_LEFT, INPUT);
+    pinMode(IR_RIGHT, INPUT_PULLUP);
+
+
     servoInit();
     robotState.wifiConnected = getWiFiStatus();
     // ======================
@@ -80,33 +90,25 @@ void setup()
     NULL,
     1);       // Core 1
 
-   /* xTaskCreatePinnedToCore(
+   xTaskCreatePinnedToCore(
         LineFollowTask,
         "LineFollowTask",
         4096,
         NULL,
         4,
         NULL,
-        1);*/
+        1);
 
-   /* xTaskCreatePinnedToCore(
+   xTaskCreatePinnedToCore(
         MotorControlTask,
         "MotorControlTask",
         4096,
         NULL,
         5,
         NULL,
-        1); */
+        1);
 
-/*
-    xTaskCreatePinnedToCore(
-        NFCTask,
-        "NFCTask",
-        4096,
-        NULL,
-        2,
-        NULL,
-        0); */
+
 
     xTaskCreatePinnedToCore(
         ControlTask,
@@ -114,6 +116,27 @@ void setup()
         4096,
         NULL,
         5,
+        NULL,
+        1);
+
+    // =======================
+    // RFID Task and Monitor
+    // =======================
+    xTaskCreatePinnedToCore(
+        RFIDTask,
+        "RFIDTask",
+        4096,
+        NULL,
+        2,
+        NULL,
+        0);
+
+    xTaskCreatePinnedToCore(
+        RFIDMonitorTask,
+        "RFIDMonitorTask",
+        4096,
+        NULL,
+        2,
         NULL,
         1);
 

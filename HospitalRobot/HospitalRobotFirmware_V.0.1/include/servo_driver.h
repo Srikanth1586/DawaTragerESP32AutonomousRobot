@@ -2,6 +2,7 @@
 #define SERVO_DRIVER_H
 
 #include <Arduino.h>
+#include <ESP32Servo.h>
 
 // ====================================
 // Servo Door Types
@@ -25,6 +26,6 @@ typedef enum
 
 void servoInit();
 void controlDoor(DoorType door, DoorCommand command);
-void setServoAngle(DoorType door, int angle);
+void setServoAngle(DoorType door, int sangle);
 
 #endif

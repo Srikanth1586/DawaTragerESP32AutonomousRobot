@@ -18,14 +18,20 @@ struct RobotState
     char mode[12];
 
     char currentTask[20];
+
+    char statusMessage[24];
 };
 
 extern RobotState robotState;
 
 enum RobotMode
 {
-    STATE_IDLE,
-    STATE_LINE_FOLLOW,
-    STATE_NFC_ACTION,
+    STATE_SEARCH_DOCK,
+    STATE_WAIT_ORDER,
+    STATE_GO_TO_PHARMACY,
+    STATE_AT_PHARMACY_WAIT_DOOR,
+    STATE_SEARCH_DESTINATION,
+    STATE_UNLOADING_MEDICINE,
+    STATE_RETURN_TO_DOCK,
     STATE_STOP
 };

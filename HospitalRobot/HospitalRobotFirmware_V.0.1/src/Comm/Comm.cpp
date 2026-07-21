@@ -1,6 +1,7 @@
 #include "Comm.h"
 #include "Config.h"
 #include <WiFi.h>
+#include <HTTPClient.h>
 #include <WebSocketsClient.h>
 #include <ArduinoJson.h>
 #include "structs.h"
@@ -8,7 +9,8 @@
 #include "event_manager.h"
 #include "system_state.h"
 #include "robot_state.h"
-#include "servo_driver.h" 
+#include "servo_driver.h"
+#include <Esp32Servo.h>
 // ======================================================
 // WEBSOCKET OBJECT
 // ======================================================
@@ -45,8 +47,17 @@ static bool extractRobotCommand(
     cmd.command =
         doc["command"] | "";
 
-    cmd.roomNumber =
-        doc["task"]["roomNumber"] | 0;
+    cmd.type.trim();
+    cmd.type.toLowerCase();
+    cmd.robotId.trim();
+    cmd.command.trim();
+    cmd.command.toLowerCase();
+
+    String roomNumber = doc["task"]["roomNumber"].as<String>();
+    roomNumber.trim();
+    roomNumber.toUpperCase();
+    strncpy(cmd.roomNumber, roomNumber.c_str(), sizeof(cmd.roomNumber) - 1);
+    cmd.roomNumber[sizeof(cmd.roomNumber) - 1] = '\0';
 
     return true;
 }
@@ -180,6 +191,72 @@ void sendRobotMessage(String message)
 }
 
 // ======================================================
+// SEND NFC DATA TO SERVER
+// ======================================================
+
+void sendRFIDDataToServer(const RFIDResult_t *rfidData)
+{
+    if (rfidData == nullptr)
+    {
+        return;
+    }
+
+    if (WiFi.status() != WL_CONNECTED)
+    {
+        Serial.println("[NFC] WiFi not connected, cannot send NFC status");
+        return;
+    }
+
+    String tagId = String(rfidData->location);
+    if (!rfidData->found || tagId.length() == 0 || tagId == "Unknown")
+    {
+        tagId = String(rfidData->uid);
+        Serial.print("[NFC] Unknown card detected, sending UID: ");
+        Serial.println(tagId);
+    }
+
+    String url = String("http://") + websocket_host + ":" + websocket_port + "/api/robots/" + robotID + "/nfc";
+
+    HTTPClient http;
+    http.begin(url);
+    http.addHeader("Content-Type", "application/json");
+
+    DynamicJsonDocument payloadDoc(128);
+    payloadDoc["tagId"] = tagId;
+
+    String payload;
+    serializeJson(payloadDoc, payload);
+
+    int httpCode = http.POST(payload);
+
+    if (httpCode > 0)
+    {
+        Serial.print("[NFC] POST ");
+        Serial.print(url);
+        Serial.print(" code=");
+        Serial.println(httpCode);
+
+        if (httpCode >= 200 && httpCode < 300)
+        {
+            Serial.println("[NFC] NFC tag status sent successfully");
+        }
+        else
+        {
+            String response = http.getString();
+            Serial.print("[NFC] Server response: ");
+            Serial.println(response);
+        }
+    }
+    else
+    {
+        Serial.print("[NFC] HTTP POST failed, error code: ");
+        Serial.println(httpCode);
+    }
+
+    http.end();
+}
+
+// ======================================================
 // GET SERVER CONNECTION STATUS
 // ======================================================
 
@@ -245,7 +322,17 @@ void webSocketEvent(WStype_t type,
             // HANDLE DOOR COMMANDS IMMEDIATELY
             // ==========================================
             
-            if(cmd.command == "open_l_box_door")
+            if(cmd.command == "open_door" || cmd.command == "open_m_box_door")
+            {
+                controlDoor(DOOR_M_BOX, DOOR_OPEN);
+                sendRobotMessage("M_BOX_DOOR opened");
+            }
+            else if(cmd.command == "close_door" || cmd.command == "close_m_box_door")
+            {
+                controlDoor(DOOR_M_BOX, DOOR_CLOSE);
+                sendRobotMessage("M_BOX_DOOR closed");
+            }
+            else if(cmd.command == "open_l_box_door")
             {
                 controlDoor(DOOR_L_BOX, DOOR_OPEN);
                 sendRobotMessage("L_BOX_DOOR opened");
@@ -254,16 +341,6 @@ void webSocketEvent(WStype_t type,
             {
                 controlDoor(DOOR_L_BOX, DOOR_CLOSE);
                 sendRobotMessage("L_BOX_DOOR closed");
-            }
-            else if(cmd.command == "open_m_box_door")
-            {
-                controlDoor(DOOR_M_BOX, DOOR_OPEN);
-                sendRobotMessage("M_BOX_DOOR opened");
-            }
-            else if(cmd.command == "close_m_box_door")
-            {
-                controlDoor(DOOR_M_BOX, DOOR_CLOSE);
-                sendRobotMessage("M_BOX_DOOR closed");
             }
             else
             {

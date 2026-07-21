@@ -1,6 +1,6 @@
 #include "servo_driver.h"
 #include "Config.h"
-#include "ESP32Servo.h"
+#include <ESP32Servo.h>
 
 // ====================================
 // Servo Objects
@@ -15,22 +15,13 @@ Servo servoMiddleBox;
 
 void servoInit()
 {
-    // Initialize servos with PWM channels
-    servoLeftBox.setPeriodHertz(50);      // 50 Hz for standard servo
-    servoMiddleBox.setPeriodHertz(50);
-    
-    servoLeftBox.attach(SERVO_L_BOX_DOOR, 1000, 2000);   // Attach to pin with pulse width range
-    servoMiddleBox.attach(SERVO_M_BOX_DOOR, 1000, 2000);
+    servoLeftBox.attach(SERVO_L_BOX_DOOR);   // Attach to pin with pulse width range
+    servoMiddleBox.attach(SERVO_M_BOX_DOOR);
     
     // Initialize doors in closed position
     servoLeftBox.write(DOOR_CLOSE_ANGLE);
     servoMiddleBox.write(DOOR_CLOSE_ANGLE);
-    
     Serial.println("Servo Motors Initialized");
-    Serial.print("L_BOX_DOOR: Pin ");
-    Serial.println(SERVO_L_BOX_DOOR);
-    Serial.print("M_BOX_DOOR: Pin ");
-    Serial.println(SERVO_M_BOX_DOOR);
 }
 
 // ====================================
@@ -38,8 +29,9 @@ void servoInit()
 // ====================================
 
 void controlDoor(DoorType door, DoorCommand command)
-{
-    int angle;
+{int angle;
+     // Ensure servos are initialized before controlling    
+   
     String doorName;
     
     // Determine angle based on command
@@ -47,15 +39,22 @@ void controlDoor(DoorType door, DoorCommand command)
     {
         angle = DOOR_OPEN_ANGLE;
         doorName = (door == DOOR_L_BOX) ? "L_BOX_DOOR" : "M_BOX_DOOR";
-        Serial.print("Opening ");
+        Serial.print("Opening SRK");
         Serial.println(doorName);
+        Serial.print("L_BOX_DOOR angle: ");
+        Serial.println(angle);
+        
+       
     }
     else
     {
         angle = DOOR_CLOSE_ANGLE;
         doorName = (door == DOOR_L_BOX) ? "L_BOX_DOOR" : "M_BOX_DOOR";
-        Serial.print("Closing ");
+        Serial.print("Closing SRK ");
         Serial.println(doorName);
+        Serial.print("L_BOX_DOOR angle: ");
+        Serial.println(angle);
+   // Allow time for the servo to reach the position
     }
     
     // Move servo to target angle
@@ -66,21 +65,35 @@ void controlDoor(DoorType door, DoorCommand command)
 // Set Servo Angle
 // ====================================
 
-void setServoAngle(DoorType door, int angle)
+void setServoAngle(DoorType door, int sangle)
 {
-    // Constrain angle to valid range (0-180)
-    angle = constrain(angle, 0, 180);
-    
     if (door == DOOR_L_BOX)
     {
-        servoLeftBox.write(angle);
-        Serial.print("L_BOX_DOOR angle: ");
-        Serial.println(angle);
+        Serial.println("Trying Left Servo");
+
+        if (!servoLeftBox.attached())
+        {
+            Serial.println("Left servo not attached, reattaching...");
+            servoLeftBox.attach(SERVO_L_BOX_DOOR);
+        }
+
+        servoLeftBox.write(sangle);
+        Serial.print("Left servo angle: ");
+        Serial.println(sangle);
     }
+
     else if (door == DOOR_M_BOX)
     {
-        servoMiddleBox.write(angle);
-        Serial.print("M_BOX_DOOR angle: ");
-        Serial.println(angle);
+        Serial.println("Trying Middle Servo");
+
+        if (!servoMiddleBox.attached())
+        {
+            Serial.println("Middle servo not attached, reattaching...");
+            servoMiddleBox.attach(SERVO_M_BOX_DOOR);
+        }
+
+        servoMiddleBox.write(sangle);
+        Serial.print("Middle servo angle: ");
+        Serial.println(sangle);
     }
 }

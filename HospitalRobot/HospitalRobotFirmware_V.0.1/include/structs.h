@@ -56,7 +56,7 @@ typedef struct
 
 typedef struct
 {
-    char uid[20];
+    char uid[32];
 
 } NFCData_t;
 
@@ -75,7 +75,7 @@ typedef struct
     String type;         // message type
     String robotId;      // robot ID
     String command;      // e.g., "go_to_pharmacy", "deliver_medicine"
-    int roomNumber;      // destination room number
+    char roomNumber[16]; // destination room number or room tag
 } RobotCommand_t;
 
 #endif
