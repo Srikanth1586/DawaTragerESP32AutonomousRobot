@@ -1,0 +1,11 @@
+Card UID-Phramacy: 04 AE 3B BF CC 2A 81 
+Card UID-Docking Station: 04 8F 33 BF CC 2A 81 
+Card UID-Room-1: 04 83 2C BF CC 2A 81 
+Card UID-Room-2: 04 81 22 BF CC 2A 81 
+Card UID-Room-3: 04 6D 1B BF CC 2A 81 
+Card UID-Room-4: 04 28 13 BF CC 2A 81 
+Card UID-Room-5: 04 FF FB BE CC 2A 81 
+Card UID-8: 04 ED F1 BE CC 2A 81 
+Card UID-9: 04 EC F1 BE CC 2A 81 
+Card UID-10: 04 11 FC BE CC 2A 81 
+Card UID-Admin: E3 14 6A 00 
